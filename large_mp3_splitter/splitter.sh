@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+## version: v0.1.0
+## dev: kaung yar zar 
 
 
 if [ -z "${1}" ]; then
