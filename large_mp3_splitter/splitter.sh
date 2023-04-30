@@ -9,8 +9,6 @@ fi
 source lib/utils.sh
 
 # read input args
-# input_file="$(echo ${1} | sed s/' '/'\\ '/g)"
-# track_list="$(echo ${2} | sed s/' '/'\\ '/g)"
 input_file="${1}"
 track_list="${2}"
 
@@ -45,7 +43,7 @@ do
 	if [ $last_index -eq $current ]; then
 		to=$(get_last_time "${input_file}")
 	fi
-	# echo "$current, $next, $ss, $to, $song_name, $last_index, $input_file"
+
 	split_file "${input_file}" $ss $to "${name}/${song_name}.mp3"
 	show_progress $((current+1)) $((last_index + 1)) "${song_name}.mp3"
 
