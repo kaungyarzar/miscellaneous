@@ -28,18 +28,32 @@ show_progress () {
 }
 
 get_file_name () {
+    # arg = filename.ext
+    # retrun `filename`
+    
     echo "${1%.*}"
 }
 
 get_file_ext () {
+    # arg = filename.ext
+    # return `ext`
+    
     echo "${1##*.}"
 }
 
 escape_special_chrs () {
+    # arg = 'file name.ext'
+    # return `file\ name.ext`
+    
     echo "${1}" | sed 's/[&/\,^$*.[]/\\&/g; s/ /\\ /g'
 }
 
 split_file () {
+    # arg1 = large_file.mp3
+    # arg2 = the start time offset (hh:mm:ss)
+    # arg3 = the end time offset (hh:mm:ss)
+    # arg4 = output_dir/musicX.mp3
+    
     local input_file=$(escape_special_chrs "${1}")
     local ss=${2}
     local to=${3}
@@ -50,6 +64,9 @@ split_file () {
 }
 
 get_last_time () {
+    # arg = large_file.mp3
+    # return `the last time offset (hh:mm:ss)`
+    
     local t_sec=$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "${1}")
     echo $(echo $t_sec | awk '{printf("%02d:%02d:%02d\n",int($1/3600),int($1/60%60),int($1%60))}')
 }
