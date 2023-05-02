@@ -10,6 +10,10 @@ fi
 
 source lib/utils.sh
 
+# logging
+log_file="/tmp/splitter_$(date +%T).log"
+
+
 # read input args
 input_file="${1}"
 track_list="${2}"
@@ -47,7 +51,7 @@ do
 	fi
 
 	show_progress $((current+1)) $((last_index + 1)) "${song_name}"
-	split_file "${input_file}" $ss $to "${name}/${song_name}.mp3"
+	split_file "${input_file}" $ss $to "${name}/${song_name}.mp3" >>"$log_file" 2>&1
 
 	#Increase index counter.
 	index=$next

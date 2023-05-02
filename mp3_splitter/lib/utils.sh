@@ -53,9 +53,12 @@ split_file () {
     local ss=${2}
     local to=${3}
     local output_file=$(escape_special_chrs "${4}")
-    cmd="ffmpeg -i $input_file -ss $ss -to $to $output_file >/dev/null 2>&1"
-    # echo $cmd
+    cmd="ffmpeg -i $input_file -ss $ss -to $to $output_file"
+    printf "%0.s-" {1..30};printf " Begin ";printf "%0.s-" {1..30};printf "\n";
+    printf "Command: $cmd";printf "\n";
+    printf "%0.s." {1..42};printf "\n";
     eval $cmd
+    printf "%0.s-" {1..30};printf " End ";printf "%0.s-" {1..30};printf "\n";
 }
 
 get_last_time () {
