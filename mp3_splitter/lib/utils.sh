@@ -1,29 +1,24 @@
 #!/usr/bin/env bash
 
 show_progress () {
-    local bar_size=40
-    local bar_char_done="#"
-    local bar_char_todo="-"
-    local bar_percentage_scale=2
     local current="$1"
     local total="$2"
-    local msg="${3}"
-
-    # calculate the progress in percentage
-    local percent=$(bc <<< "scale=$bar_percentage_scale; 100 * $current / $total" )
-    # The number of done and todo characters
-    local done=$(bc <<< "scale=0; $bar_size * $percent / 100" )
-    local todo=$(bc <<< "scale=0; $bar_size - $done" )
-
-    # build the done and todo sub-bars
-    local done_sub_bar=$(printf "%${done}s" | tr " " "${bar_char_done}")
-    local todo_sub_bar=$(printf "%${todo}s" | tr " " "${bar_char_todo}")
-
-    # output the bar
-    echo -ne "\rProgress : [${done_sub_bar}${todo_sub_bar}] ${percent}% [$msg]"
-
-    if [ $total -eq $current ]; then
-        echo -e "\nDONE"
+    local msg="$3"
+    local width=40
+    local max_msg_width=$((width - 5))  # maximum width of message
+    local msg_width=${#msg}
+    if (( msg_width > max_msg_width )); then
+        msg="${msg:0:$((max_msg_width - 3))}..."  # truncate message and add ellipsis
+        msg_width=${#msg}
+    fi
+    local percentage=$((current * 100 / total))
+    local progress=$((current * (width - 14) / total))
+    local remainder=$((width - 14 - progress))
+    local done="$(printf '%*s' "$progress" | tr ' ' '#')"
+    local todo="$(printf '%*s' "$remainder" | tr ' ' '-')"
+    printf "\rProgress : [%s%s] %d%%\t%${max_msg_width}s" "$done" "$todo" "$percentage" "$msg"
+    if (( current == total )); then
+        printf "\nDONE\n"
     fi
 }
 

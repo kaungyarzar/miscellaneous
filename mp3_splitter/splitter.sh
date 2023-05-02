@@ -46,8 +46,8 @@ do
 		to=$(get_last_time "${input_file}")
 	fi
 
+	show_progress $((current+1)) $((last_index + 1)) "${song_name}"
 	split_file "${input_file}" $ss $to "${name}/${song_name}.mp3"
-	show_progress $((current+1)) $((last_index + 1)) "${song_name}.mp3"
 
 	#Increase index counter.
 	index=$next
