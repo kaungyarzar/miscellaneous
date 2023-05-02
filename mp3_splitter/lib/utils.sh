@@ -45,7 +45,7 @@ escape_special_chrs () {
     # arg = 'file name.ext'
     # return `file\ name.ext`
     
-    echo "${1}" | sed 's/[&/\,^$*.[]/\\&/g; s/ /\\ /g'
+    echo "${1}" | sed 's/[&/\\| ',]/\\\\&/g'
 }
 
 split_file () {

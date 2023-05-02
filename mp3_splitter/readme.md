@@ -1,4 +1,4 @@
-# Large MP3 file splitter
+# MP3 Splitter
 
 ## Version
 - v0.1.0
