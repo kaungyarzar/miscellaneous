@@ -9,6 +9,12 @@ Current version is only support for `mp3` format.
 - FFmpeg
 - bash
 
+## FFmpeg Installation (Ubuntu 20.04)
+```shell
+sudo apt update
+sudo apt install ffmpeg
+```
+
 ## Usage Example
 
 ```
