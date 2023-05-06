@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+#
+
+# print helper msg
+if [ -z "$1" ]; then
+	echo "
+	#######################################
+	#        Vim X Script Creator         #
+	#                                     #
+	#      * (bash, python, awk, perl) *        #
+	#######################################
+
+	Usage: vimX <new_script.ext>
+
+	"
+	exit 0
+fi
+ 
+filename=${1%.*}
+extension=${1##*.}
+
+# check existing and swap name
+[[ -x $filename ]] && fileoname=$filename || fileoname=$1
+
+# get sheband.
+case ${extension} in
+	'py')
+		sheband='#!/usr/bin/env python'
+		;;
+	'sh'|'bash')
+		sheband='#!/usr/bin/env bash'
+		;;
+	'awk')
+		sheband='#!/usr/bin/awk -f'
+		;;
+	'pl'|'perl')
+		sheband='#!/usr/bin/env perl'
+		;;
+	'*')
+		###
+		;;
+esac
+
+# set sheband for new script
+if [[ ! -s $fileoname ]]; then
+	echo -e "$sheband\n\n" > $fileoname
+fi
+
+# fopen with vim.
+vim $fileoname
+
+# set X mode.
+if [[ ! -x $fileoname && -f $fileoname ]] ; then
+	chmod +x $fileoname
+fi
+
+# remove ext.
+if [[ ! -f $filename ]]; then
+	mv $fileoname $filename
+fi

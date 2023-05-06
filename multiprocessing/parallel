@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+if [ -z $1 ]; then
+	echo 'Usage: ./parallel <executable script> <args.txt>'
+	exit 0
+fi
+
+num_proc=$(grep -Pc '^processor' /proc/cpuinfo)
+xargs -a $2 -L 1 -P $num_proc ./$1

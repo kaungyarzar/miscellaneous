@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+if [ -f $1 ]; then
+echo "Usage: mongo-export-json-file <DB_CONN_URI> <output.json>"
+exit 0
+fi
+
+echo -n "Enter Collection Name: "
+read collname
+
+command="mongoexport --uri='$1' --collection='$collname' --jsonArray --type='json' --out=$2"
+echo """
+	$command
+"""
+echo -n "Are you sure want to export (y/N): "
+read flag
+
+case ${flag:=N} in
+	(N | n) echo "Abort.";;
+	(Y | y) eval $command ;;
+esac

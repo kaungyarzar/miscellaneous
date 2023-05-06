@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+if [ -f $1 ]; then
+echo "Usage: mongo-import-json-file <DB_CONN_URI> <data.json>"
+exit 0
+fi
+
+#echo -n "Enter DB Name: "
+#read dbname
+
+echo -n "Enter Collection Name: "
+read collname
+
+command="mongoimport --uri='$1' --collection='$collname' --drop --jsonArray --type='json' --file=$2"
+echo """
+	$command
+"""
+echo -n "Are you sure want to import (y/N): "
+read flag
+
+case ${flag:=N} in
+	(N | n) echo "Abort.";;
+	(Y | y) eval $command ;;
+esac

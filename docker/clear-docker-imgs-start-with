@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+filters=$(docker images | grep "$1" | awk '{print $1}')
+
+echo "$filters"
+
+echo -n 'Are you sure want to delete (y/N): '
+read ans
+
+if [ ${ans:='N'} == 'N' ]; then
+	exit 0
+else
+docker rmi $filters
+fi

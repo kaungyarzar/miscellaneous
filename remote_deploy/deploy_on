@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+
+if [ -f $1 ]; then
+	echo """
+	Usage: deploy_on <hostAddress> <package.tar>
+
+	 * 'package.tar' must contains 'deploy.sh' file.
+	 * 'SSHPASS' env variable can be used for login automation.
+	"""
+	exit 0
+fi
+
+# check pkg contains 'deploy.sh'
+tar -tf $2 deploy.sh > /dev/null 2>&1
+if [ $? -ne 0 ]; then
+	echo "($2) doesn't contan 'deploy.sh'."
+	exit 1
+fi
+
+# package copy to remote host
+copy_to_remote="scp $2 $1:/tmp/"
+
+if [ $SSHPASS ]; then
+	eval "sshpass -p '$SSHPASS' $copy_to_remote"
+else
+	eval $copy_to_remote
+fi
+
+# execute cmds on remote host
+pkgn="${2##*/}"
+exec_on_remote="ssh $1 'tar -xvf /tmp/$pkgn -C /tmp/ | cd /tmp/${pkgn%.tar} | ./deploy.sh'"
+
+if [ $SSHPASS ]; then
+	eval "sshpass -p '$SSHPASS' $exec_on_remote"
+else
+	eval $exec_on_remote
+fi

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+if [ -z $1 ]; then
+	echo 'Usage: ./single <executable script> <args.txt>'
+	exit 0
+fi
+
+xargs -a $2 -L 1 ./$1
