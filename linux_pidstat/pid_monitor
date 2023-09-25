@@ -1,49 +1,80 @@
 #!/usr/bin/env bash
+#
+# developer : kaung yar zar <kaungyarzarbcm4313@gmail.com>
 
-
-if [-z $1]; then
-echo "Usage: $0 <pid>"
-exit 0
+if [ -z $1 ]; then
+	echo "Usage: $0 <pid>"
+	exit 0
 fi
 
 pid=$1
 interval=2
-style=$(tput bold)
+
+# text styles
+bold=$(tput bold)
 normal=$(tput sgr0)
+blink=$(tput blink)
+
+startup() {
+	#clear current view
+	tput clear
+
+	#set cursor to invisible
+	tput civis
+}
+
+shutdown() {
+
+	#set cursor to normal state
+	tput cnorm
+
+	#clear screen
+        clear
+	
+	#exit program
+	exit 0
+}
+
+trap shutdown SIGINT SIGTERM SIGKILL 
 
 monitor_pid() {
-pidstat -p $pid -v -r -s -u --human
+	pidstat -p $pid -v -r -s -u --human
 
-echo -e """
+	echo -e """
 
-${style}UID${normal}       => The real user identification number of the task being monitored.
-${style}USER${normal}      => The name of the real user owning the task being monitored.
-${style}PID${normal}       => The identification number of the task being monitored.
-${style}%usr${normal}      => Percentage  of CPU used by the task while executing at the user level (application), with or without nice priority. 
-                  Note that this field does NOT include time spent running a virtual processor.
-${style}%system${normal}   => Percentage of CPU used by the task while executing at the system level (kernel).
-${style}%guest${normal}    => Percentage of CPU spent by the task in virtual machine (running a virtual processor).
-${style}%wait${normal}     => Percentage of CPU spent by the task while waiting to run.
-${style}%CPU${normal}      => Total percentage of CPU time used by the task. In an SMP environment, the task's CPU usage will be divided by
-                  the total  num‐ber of CPU's if option -I has been entered on the command line.
-${style}CPU${normal}       => Processor number to which the task is attached.
-${style}threads${normal}   => Number of threads associated with current task.
-${style}fd-nr${normal}     => Number of file descriptors associated with current task
-${style}Command${normal}   => The command name of the task.
-${style}StkSize${normal}   => The amount of memory in kilobytes reserved for the task as stack, but not necessarily used.
-${style}StkRef${normal}    => The amount of memory in kilobytes used as stack, referenced by the task.
-${style}minflt/s${normal}  => Total number of minor faults the task has made per second, those which have not required loading a memory page from disk.
-${style}majflt/s${normal}  => Total number of major faults the task has made per second, those which have required loading a memory page from disk.
-${style}VSZ${normal}       => Virtual Size: The virtual memory usage of entire task in kilobytes.
-${style}RSS${normal}       => Resident Set Size: The non-swapped physical memory used by the task in kilobytes.
-${style}%MEM${normal}      => The tasks's currently used share of available physical memory."""
+	${bold}UID${normal}       => The real user identification number of the task being monitored.
+	${bold}USER${normal}      => The name of the real user owning the task being monitored.
+	${bold}PID${normal}       => The identification number of the task being monitored.
+	${bold}%usr${normal}      => Percentage  of CPU used by the task while executing at the user level (application), with or without nice priority. 
+	                              Note that this field does NOT include time spent running a virtual processor.
+	${bold}%system${normal}   => Percentage of CPU used by the task while executing at the system level (kernel).
+	${bold}%guest${normal}    => Percentage of CPU spent by the task in virtual machine (running a virtual processor).
+	${bold}%wait${normal}     => Percentage of CPU spent by the task while waiting to run.
+	${bold}%CPU${normal}      => Total percentage of CPU time used by the task. In an SMP environment, the task's CPU usage will be divided by
+	                              the total  num‐ber of CPU's if option -I has been entered on the command line.
+	${bold}CPU${normal}       => Processor number to which the task is attached.
+	${bold}threads${normal}   => Number of threads associated with current task.
+	${bold}fd-nr${normal}     => Number of file descriptors associated with current task
+	${bold}Command${normal}   => The command name of the task.
+	${bold}StkSize${normal}   => The amount of memory in kilobytes reserved for the task as stack, but not necessarily used.
+	${bold}StkRef${normal}    => The amount of memory in kilobytes used as stack, referenced by the task.
+	${bold}minflt/s${normal}  => Total number of minor faults the task has made per second, those which have not required loading a memory page from disk.
+	${bold}majflt/s${normal}  => Total number of major faults the task has made per second, those which have required loading a memory page from disk.
+	${bold}VSZ${normal}       => Virtual Size: The virtual memory usage of entire task in kilobytes.
+	${bold}RSS${normal}       => Resident Set Size: The non-swapped physical memory used by the task in kilobytes.
+	${bold}%MEM${normal}      => The tasks's currently used share of available physical memory.
+	
+	${blink}< Ctrl-C > to exit.${normal}"""
 
 }
 
+#startup configure 
+startup
+
 while :
 do
-monitor_pid
-sleep $interval
-tput clear
+	monitor_pid
+	sleep $interval
+	tput clear
 done
 
