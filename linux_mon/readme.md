@@ -12,8 +12,12 @@ This is interactive tool for monitoring on a process on a `linux` system. I hope
 $ sudo apt update && sudo apt install sysstat
 ```
 
-### How to use
+### Help
 ```
 ubuntu@ubuntu:~ $ ./pid_monitor
 Usage: ./pid_monitor <pid>
 ```
+
+### Console Output
+
+<img alt="pid_stats" width="640" src="img/img1.png" />
