@@ -1,5 +1,5 @@
 ## Monitoring on a process
-This is interactive tool for monitoring on a process on a `linux` system. I hope it will be useful debugging. 
+This is an interactive tool for monitoring on a process of `linux` system. I hope it will be useful debugging. 
 
 ### Requirements:
 - bash <default: linux>
