@@ -1,4 +1,5 @@
 # MP3 Splitter
+Tool for splitting large mp3 file of songs to multiple mp3 files. My purpose is to split sigle large youtube mp3 songtrack.
 
 ## Version
 - v0.1.0
