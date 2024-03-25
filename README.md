@@ -1,2 +1,2 @@
 # Tools
-Tools which are useful for linux users.
+A compilation of helpful tools for Linux users.
